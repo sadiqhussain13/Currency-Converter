@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="converter">
+            <h1>Currency Converter</h1>
+            <!-- Conversion Result -->
+            <div class="result">
+                <span id="conversion-result">1 INR equals 0.012 USD</span>
+            </div>
+
+            <!-- Input Section -->
+            <div class="input-section">
+                <input type="number" id="amount" value="1" min="1">
+                <select id="base-currency">
+                    <option value="EUR" selected>EUR</option>
+                    <option value="USD">USD</option>
+                    <option value="INR">INR</option>
+                    <!-- Add more currencies here -->
+                </select>
+                <span>to</span>
+                <select id="target-currency">
+                    <option value="INR" selected>INR</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <!-- Add more currencies here -->
+                </select>
+                <button id="convert-btn">Convert</button>
+            </div>
+
+            <!-- Graph Section -->
+            <div class="graph">
+                <h3>Exchange Rate Trend (Last 30 Days)</h3>
+                <canvas id="exchange-rate-graph"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/static/js/serviceWorker.js')
+                .then(() => console.log('Service Worker Registered'))
+                .catch(err => console.error('Service Worker Error:', err));
+        }
+    </script>
+</body>
+</html>
