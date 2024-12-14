@@ -1,15 +1,28 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template, send_from_directory
 import requests
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
 
-app = Flask(__name__)
+load_dotenv()
 
-API_KEY = "5fdfc007cf785aee873ef79b812365c5"
+app = Flask(__name__, static_folder='static', template_folder='templates')
+
+API_KEY = os.getenv("EXCHANGE_RATE_API_KEY")
 BASE_URL = "http://api.exchangeratesapi.io/v1/"
 
+if not API_KEY:
+    raise ValueError("API key is missing. Check your .env file.")
+
+# Root route to render the frontend template
 @app.route('/')
 def home():
-    return "Currency Converter API is running!"
+    return render_template('index.html')
+
+# Serve static files (if needed)
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return send_from_directory(app.static_folder, filename)
 
 # Endpoint to fetch live exchange rates
 @app.route('/api/convert', methods=['GET'])
